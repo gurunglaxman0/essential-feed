@@ -71,10 +71,18 @@
 		3B338EEA2B283BC70007CABA /* EssentialFeed */ = {
 			isa = PBXGroup;
 			children = (
+				3B338F082B283EBA0007CABA /* Feed Feature */,
+			);
+			path = EssentialFeed;
+			sourceTree = "<group>";
+		};
+		3B338F082B283EBA0007CABA /* Feed Feature */ = {
+			isa = PBXGroup;
+			children = (
 				3B338F002B283C400007CABA /* FeedItem.swift */,
 				3B338F062B283E1F0007CABA /* FeedLoader.swift */,
 			);
-			path = EssentialFeed;
+			path = "Feed Feature";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
