@@ -10,5 +10,5 @@ struct FeedItem {
     let id: UUID
     let descripion: String?
     let locastion: String?
-    let image: URL
+    let imageURL: URL
 }

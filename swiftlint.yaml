@@ -8,12 +8,14 @@ only_rules:
   - legacy_nsgeometry_functions
   - operator_usage_whitespace
   - return_arrow_whitespace
-  - trailing_newline
   - unused_optional_binding
   - vertical_whitespace
   - void_return
   - unowned_variable_capture
   - custom_rules
+
+disabled_rules:
+    - trailing_whitespace
 
 excluded:
   - Carthage
