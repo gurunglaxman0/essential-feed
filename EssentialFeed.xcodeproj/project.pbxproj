@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3B338EFA2B283C1C0007CABA /* EssentialFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B338EE82B283BC70007CABA /* EssentialFeed.framework */; };
 		3B338F012B283C400007CABA /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B338F002B283C400007CABA /* FeedItem.swift */; };
+		3B338F042B283D920007CABA /* swiftlint.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 3B338F032B283D920007CABA /* swiftlint.yaml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,6 +26,7 @@
 		3B338EE82B283BC70007CABA /* EssentialFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EssentialFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B338EF62B283C1C0007CABA /* EssentialFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B338F002B283C400007CABA /* FeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
+		3B338F032B283D920007CABA /* swiftlint.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = swiftlint.yaml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +51,7 @@
 		3B338EDE2B283BC70007CABA = {
 			isa = PBXGroup;
 			children = (
+				3B338F032B283D920007CABA /* swiftlint.yaml */,
 				3B338EEA2B283BC70007CABA /* EssentialFeed */,
 				3B338EE92B283BC70007CABA /* Products */,
 			);
@@ -92,6 +95,7 @@
 				3B338EE42B283BC70007CABA /* Sources */,
 				3B338EE52B283BC70007CABA /* Frameworks */,
 				3B338EE62B283BC70007CABA /* Resources */,
+				3B338F052B283DC00007CABA /* Swiftlint Script */,
 			);
 			buildRules = (
 			);
@@ -163,6 +167,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B338F042B283D920007CABA /* swiftlint.yaml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,6 +179,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3B338F052B283DC00007CABA /* Swiftlint Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Swiftlint Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3B338EE42B283BC70007CABA /* Sources */ = {
