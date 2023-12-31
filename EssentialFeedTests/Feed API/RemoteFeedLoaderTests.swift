@@ -119,11 +119,6 @@ class RemoteFeedLoaderTestes: XCTestCase {
     private func failure(_ error: RemoteFeedLoader.Error) -> RemoteFeedLoader.Result {
         return .failure(error)
     }
-    private func trackForMemoryLeaks(_ instance: AnyObject, file: StaticString = #filePath, line: UInt = #line) {
-        addTeardownBlock { [weak instance] in
-            XCTAssertNil(instance, "Instance should have been deallocated, Potential memory leak.", file: file, line: line)
-        }
-    }
 
     private func expect(_ sut: RemoteFeedLoader, toCompleteWith expectedResult: RemoteFeedLoader.Result, when action: () -> Void, file: StaticString = #file, line: UInt = #line) {
         
@@ -167,9 +162,9 @@ class RemoteFeedLoaderTestes: XCTestCase {
         var requestedURLs: [URL] {
             messages.map {$0.url}
         }
-        var messages = [(url: URL, completion: (HTTPCLientResult) -> Void)]()
+        var messages = [(url: URL, completion: (HTTPClientResult) -> Void)]()
 
-        func get(from url: URL, completion: @escaping (HTTPCLientResult) -> Void) {
+        func get(from url: URL, completion: @escaping (HTTPClientResult) -> Void) {
             messages.append((url, completion))
         }
         

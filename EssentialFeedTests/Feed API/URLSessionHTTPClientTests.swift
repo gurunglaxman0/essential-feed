@@ -8,7 +8,7 @@ class URLSessionHTTPClient {
         self.session = session
     }
     
-    func get(from url: URL, completion: @escaping (HTTPCLientResult) -> Void) {
+    func get(from url: URL, completion: @escaping (HTTPClientResult) -> Void) {
         session.dataTask(with: url ) { _ , _ , error in
             if let error = error {
                 completion(.failure(error))
@@ -60,7 +60,7 @@ final class URLSessionHTTPClientTests: XCTestCase {
                 XCTFail("Expected failure with error \(error), got \(result) instead")
             }
             exp.fulfill()
-        }
+        } 
         
         wait(for: [exp], timeout: 1.0)
     }
@@ -70,11 +70,6 @@ final class URLSessionHTTPClientTests: XCTestCase {
         let sut = URLSessionHTTPClient()
         trackForMemoryLeaks(sut, file: file, line: line)
         return sut
-    }
-    private func trackForMemoryLeaks(_ instance: AnyObject, file: StaticString = #filePath, line: UInt = #line) {
-        addTeardownBlock { [weak instance] in
-            XCTAssertNil(instance, "Instance should have been deallocated, Potential memory leak.", file: file, line: line)
-        }
     }
     
     private class URLProtocolStub: URLProtocol {
