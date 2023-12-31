@@ -24,7 +24,7 @@ final class URLSessionHTTPClientTests: XCTestCase {
         let error = NSError(domain: "an error", code: 0)
         URLProtocolStub.startInterceptingRequest()
         let sut = URLSessionHTTPClient()
-        URLProtocolStub.stub(url: url, data: nil, response: nil, error: error)
+        URLProtocolStub.stub(data: nil, response: nil, error: error)
         
         let exp = expectation(description: "Wait for completion")
         sut.get(from: url) { result in
@@ -44,15 +44,15 @@ final class URLSessionHTTPClientTests: XCTestCase {
     
     // MARK: - Helpers
     private class URLProtocolStub: URLProtocol {
-        private static var stubs = [URL: Stub]()
+        private static var stubs: Stub?
         private struct Stub {
             let data: Data?
             let response: URLResponse?
             let error: Error?
         }
         
-        static func stub(url: URL, data: Data?, response: URLResponse?, error: Error? = nil) {
-            stubs[url] = Stub(data: data, response: response, error: error)
+        static func stub(data: Data?, response: URLResponse?, error: Error? = nil) {
+            stubs = Stub(data: data, response: response, error: error)
         }
         
         static func startInterceptingRequest(){
@@ -64,8 +64,7 @@ final class URLSessionHTTPClientTests: XCTestCase {
         }
         
         override class func canInit(with request: URLRequest) -> Bool {
-            guard let url = request.url else {return false}
-            return stubs[url] != nil
+          return true
         }
         
         override class func canonicalRequest(for request: URLRequest) -> URLRequest {
@@ -73,7 +72,7 @@ final class URLSessionHTTPClientTests: XCTestCase {
         }
         
         override func startLoading() {
-            guard let url = request.url, let stub = URLProtocolStub.stubs[url] else {return}
+            guard let stub = URLProtocolStub.stubs else {return}
             if let data = stub.data  {
                 client?.urlProtocol(self, didLoad: data)
             }
