@@ -1,0 +1,30 @@
+# .circleci/config.yml
+version: 2.1
+jobs:
+  build:
+    macos:
+      xcode: 15.1.0
+    working_directory: /Users/distiller/project
+    environment:
+      FL_OUTPUT_DIR: output
+      FASTLANE_LANE: ciTest
+    steps:
+      - checkout
+      - run: bundle install
+      - run:
+          name: pre-start simulator
+          command: xcrun instruments -w "iPhone 15 Pro Max (17.2)" || true
+      - run:
+          name: fastlane
+          command: bundle exec fastlane $FASTLANE_LANE
+      - store_artifacts:
+          path: output
+      - store_test_results:
+          path: output/scan
+      # - run:
+      #     name: CI Testing
+      #     command: fastlane ciTest
+      # - store_artifacts:
+      #     path: output
+      # - store_test_results:
+      #     path: output/scan
