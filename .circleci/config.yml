@@ -6,7 +6,7 @@ jobs:
       xcode: 15.1.0
     working_directory: /Users/distiller/project
     environment:
-      FL_OUTPUT_DIR: output
+      FL_OUTPUT_DIR: /Users/distiller/project
       FASTLANE_LANE: ciTest
     steps:
       - checkout
@@ -15,9 +15,9 @@ jobs:
           name: fastlane
           command: bundle exec fastlane $FASTLANE_LANE
       - store_artifacts:
-          path: output
+          path: /Users/distiller/project
       - store_test_results:
-          path: output/scan
+          path: /Users/distiller/project
       # - run:
       #     name: CI Testing
       #     command: fastlane ciTest
