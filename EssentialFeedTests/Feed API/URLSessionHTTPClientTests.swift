@@ -50,7 +50,7 @@ class URLSessionHTTPClientTests: XCTestCase {
     }
     
     func test_getFromURL_failsOnRequestError() {
-        let requestError = NSError(domain: "an error", code: 0)
+        let requestError = anError()
         
         let receivedError = resultErrorFor(data: nil, response: nil, error: requestError) as? NSError
        
@@ -59,8 +59,20 @@ class URLSessionHTTPClientTests: XCTestCase {
            
     }
     
-    func test_getFromURL_failsOnAllNilValues(){
+    func test_getFromURL_failsOnAllInvalidRepresentations(){
+        let nonHTTPURLResponse = URLResponse(url: anyURL(), mimeType: nil, expectedContentLength: 0, textEncodingName: nil)
+        let anyHTTPURLResponse = HTTPURLResponse(url: anyURL(), statusCode: 200  , httpVersion: nil, headerFields: nil)
+        
         XCTAssertNotNil(resultErrorFor(data: nil, response: nil, error: nil))
+        XCTAssertNotNil(resultErrorFor(data: nil, response: nonHTTPURLResponse, error: nil))
+        XCTAssertNotNil(resultErrorFor(data: nil, response: anyHTTPURLResponse, error: nil))
+        XCTAssertNotNil(resultErrorFor(data: anyData(), response: nil, error: nil))
+        XCTAssertNotNil(resultErrorFor(data: anyData(), response: nil, error: anError()))
+        XCTAssertNotNil(resultErrorFor(data: nil, response: nonHTTPURLResponse, error: anError()))
+        XCTAssertNotNil(resultErrorFor(data: nil, response: anyHTTPURLResponse, error: anError()))
+        XCTAssertNotNil(resultErrorFor(data: anyData(), response: nonHTTPURLResponse, error: anError()))
+        XCTAssertNotNil(resultErrorFor(data: anyData(), response: anyHTTPURLResponse, error: anError()))
+        XCTAssertNotNil(resultErrorFor(data: anyData(), response: nonHTTPURLResponse, error: nil))
     }
     
     // MARK: - Helpers
@@ -70,6 +82,13 @@ class URLSessionHTTPClientTests: XCTestCase {
         return sut
     }
     
+    private func anyData() -> Data {
+        "any data".data(using: .utf8)!
+    }
+    
+    private func anError() -> NSError {
+        NSError(domain: "an error", code: 0)
+    }
     private func resultErrorFor(data: Data?, response: URLResponse?, error: Error?, file: StaticString = #filePath, line: UInt = #line) -> Error? {
         URLProtocolStub.stub(data: data, response: response, error: error)
         let sut = makeSUT(file: file, line: line)
