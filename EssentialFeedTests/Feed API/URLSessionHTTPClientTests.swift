@@ -103,10 +103,12 @@ class URLSessionHTTPClientTests: XCTestCase {
         switch result {
         case let .success(data, response):
            return (data, response)
-        default:
-            XCTFail("Expected success, got \(result) instead", file: file, line: line)
-            return nil
+        case .failure:
+            XCTFail("Expected success, got \(result!) instead", file: file, line: line)
+        case .none:
+            XCTFail("Expected a result, got nil instead seems like something wrong with completion handler", file: file, line: line)
         }
+        return nil
     }
     
     private func resultErrorFor(data: Data?, response: URLResponse?, error: Error?, file: StaticString = #filePath, line: UInt = #line) -> Error? {
@@ -115,17 +117,19 @@ class URLSessionHTTPClientTests: XCTestCase {
         switch result {
         case let .failure(error):
             return error
-        default:
-            XCTFail("Expected failure, got \(result) instead", file: file, line: line)
-            return nil
+        case .success:
+            XCTFail("Expected failure, got \(result!) instead", file: file, line: line)
+        case .none:
+            XCTFail("Expected a result, got nil instead seems like something wrong with completion handler", file: file, line: line)
         }
+        return nil
     }
     
-    private func resultFor(data: Data?, response: URLResponse?, error: Error?, file: StaticString = #filePath, line: UInt = #line) -> HTTPClientResult {
+    private func resultFor(data: Data?, response: URLResponse?, error: Error?, file: StaticString = #filePath, line: UInt = #line) -> HTTPClientResult? {
         URLProtocolStub.stub(data: data, response: response, error: error)
         let sut = makeSUT(file: file, line: line)
         let exp = expectation(description: "Wait for completion")
-        var receivedResult: HTTPClientResult!
+        var receivedResult: HTTPClientResult?
         
         sut.get(from: anyURL()) { result in
             receivedResult = result
